@@ -1,5 +1,5 @@
 /* Not sure why this was needed but was in the Original Sample
-Removed the link to the Certificate as not needed in our example */
+Removed the link to the Certificate as not needed in our example  */
 options validvarname=any;
 title 'Retrieve MEI_CLI Data for Australia, Japan, Germany, UK';
 
@@ -38,6 +38,7 @@ data keylist2;
 	output;
 run;
 
+/* Note the SETID */
 title1 "Main Economic Indicators Database from the OECD";
 title2 "Request MEI_CLI for These Countries: AUS, JPN, DEU, GBR";
 libname oecd saseoecd "c:\temp" setid=MEI_CLI inset0=keylist0 inset1=keylist1 
@@ -45,6 +46,7 @@ libname oecd saseoecd "c:\temp" setid=MEI_CLI inset0=keylist0 inset1=keylist1
 
 data mylib.MEI3c;
 	set oecd.MEI3C;
+
 	/* MEI3C is specified in the OUT= option */
 	date_sas=input(date, anydtdte.);
 	format date_sas monyy.;
