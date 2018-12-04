@@ -1,5 +1,9 @@
+/* Not sure why this was needed but was in the Original Sample
+Removed the link to the Certificate as not needed in our example */
 options validvarname=any;
-title 'Retrieve MEI_CLI Data for Australia, Japan, and Germany';
+title 'Retrieve MEI_CLI Data for Australia, Japan, Germany, UK';
+
+/* Location for final OECD table */
 libname mylib "c:\data\OECD";
 
 /* specify selection keys; key0 is the time series */
@@ -10,7 +14,7 @@ data keylist0;
 	output;
 run;
 
-/* select Australia, Japan, and Germany; key1 is country */
+/* select Australia, Japan, Germany and UK (GBR); key1 is country */
 data keylist1;
 	/* See Step 4 */
 	length key1 $3;
@@ -36,16 +40,11 @@ run;
 
 title1 "Main Economic Indicators Database from the OECD";
 title2 "Request MEI_CLI for These Countries: AUS, JPN, DEU, GBR";
-libname oecd saseoecd "c:\temp" setid=MEI_CLI            /* Step 2 */
-inset0=keylist0          /* Step 3 */
-inset1=keylist1          /* Step 4 */
-inset2=keylist2          /* Step 5 */
-out=MEI3C start='2015-09'          /* Step 10*/
-end='2017-08';
+libname oecd saseoecd "c:\temp" setid=MEI_CLI inset0=keylist0 inset1=keylist1 
+	inset2=keylist2 out=MEI3C start='2015-09' end='2017-08';
 
-data MEI3c;
-	set mylib.MEI3C;
-
+data mylib.MEI3c;
+	set oecd.MEI3C;
 	/* MEI3C is specified in the OUT= option */
 	date_sas=input(date, anydtdte.);
 	format date_sas monyy.;
@@ -54,5 +53,5 @@ run;
 
 title3 "The mylib.myMEI Data Set";
 
-proc print data=work.MEI3c label;
+proc print data=mylib.MEI3c label;
 run;
