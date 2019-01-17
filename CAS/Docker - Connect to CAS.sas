@@ -1,8 +1,11 @@
+options set=CASCLIENTDEBUG=1;
+
 /*****************************************************************************/
 /*  Set the options necessary for creating a connection to a CAS server.     */
 /*  Once the options are set, the cas command connects the default session   */
 /*  to the specified CAS server and CAS port, for example the default value  */
 /*  is 5570.                                                                 */
+/*  Remember may need to modify the _authinfo file                           */
 /*****************************************************************************/
 options cashost="localhost" casport=5570;
 cas;
