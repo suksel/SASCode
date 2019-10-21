@@ -1,0 +1,325 @@
+﻿NOTE: PROCEDURE PRINTTO used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+4          OPTIONS LOCALE=en_US DFLANG=LOCALE VALIDVARNAME=ANY VALIDMEMNAME=EXTEND;
+5          
+6          OPTIONS NOSYNTAXCHECK;
+7          DATA _NULL_;
+8          RC=DLGCDIR('C:/Users/suksel/OneDrive - SAS/Documents/GitHub/SASCode');
+9          RUN;
+
+NOTE: The current working directory is now "C:\Users\suksel\OneDrive - 
+      SAS\Documents\GitHub\SASCode".
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+10         OPTIONS NOSYNTAXCHECK;
+11         
+12         FILENAME _HTMLOUT %NRSTR("C:/Users/suksel/OneDrive -
+12       ! SAS/Documents/GitHub/SASCode/airport codes.html");
+13         
+14         FILENAME _GSFNAME TEMP;
+15         DATA _NULL_;
+16         CALL SYMPUT("GRAPHINIT","");
+17         CALL SYMPUT("GRAPHTERM","");
+18         RC=TSLVL('SASXGOPT','N');
+19         _ERROR_=0;
+20         IF (RC^=' ') THEN DO;
+21         CALL SYMPUT("GRAPHINIT","GOPTIONS RESET=ALL GSFNAME=_GSFNAME;");
+22         CALL SYMPUT("GRAPHTERM","GOPTIONS NOACCESSIBLE;");
+23         END;
+24         RUN;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+25         DATA _NULL_;
+26         RC=SYSPROD("PRODNUM002");
+27         IF (RC^=1) THEN DO;
+28         CALL SYMPUT("GRAPHINIT","");
+29         CALL SYMPUT("GRAPHTERM","");
+30         END;
+31         RUN;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+2                                       The SAS System  Thursday, February 21, 2019 11:04:53 AM
+
+      cpu time            0.01 seconds
+      
+
+32         %LET SYSCC=0;
+33         %LET _CLIENTAPP='SAS Studio';
+34         %LET _CLIENTAPPABREV=Studio;
+35         %LET _CLIENTAPPVERSION=3.8;
+36         %LET _CLIENTVERSION=3.8;
+37         %LET _CLIENTMODE=background;
+38         %LET _SASSERVERNAME=%BQUOTE(localhost);
+39         %LET _SASHOSTNAME=%BQUOTE(suksel);
+40         %LET _SASPROGRAMFILEHOST=%BQUOTE(suksel);
+41         %LET _CLIENTUSERID=%BQUOTE(suksel);
+42         %LET _CLIENTUSERNAME=%BQUOTE(Stephen Ludlow);
+43         %LET CLIENTMACHINE=%BQUOTE(SUKSEL);
+44         %LET _CLIENTMACHINE=%BQUOTE(SUKSEL);
+45         %let SASWORKLOCATION="%sysfunc(getoption(work))/";
+46         FILENAME _CWD '.';
+47         DATA _NULL_;
+48         CALL SYMPUT('_SASWORKINGDIR',PATHNAME('_CWD'));
+49         RUN;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+50         FILENAME _CWD;
+NOTE: Fileref _CWD has been deassigned.
+51         
+52         %LET _SASPROGRAMFILE = %NRQUOTE(%NRSTR(C:/Users/suksel/OneDrive -
+52       ! SAS/Documents/GitHub/SASCode/airport codes.sas));
+53         %LET _EXECENV=SASStudio Background;
+54         %LET _SASWS_ = %BQUOTE(C:/Users/suksel);
+55         %LET _SASWSTEMP_=%BQUOTE();
+56         ODS LISTING CLOSE;
+57         ODS AUTONAVIGATE OFF;
+58         ODS GRAPHICS ON;
+59         ODS HTML5 (ID=WEB) DEVICE=PNG GPATH="&_SASWSTEMP_" ENCODING=utf8 FILE=_HTMLOUT
+59       ! (TITLE='Results: airport codes.sas') STYLE=Htmlblue OPTIONS(BITMAP_MODE='INLINE'
+59       ! OUTLINE='ON' SVG_MODE='INLINE'
+59       ! CSS_PREFIX='.ods_7249cf38-96e8-43aa-aa5f-6259ad70e9b9'
+59       ! BODY_ID='div_7249cf38-96e8-43aa-aa5f-6259ad70e9b9' );
+NOTE: Writing HTML5(WEB) Body file: _HTMLOUT
+60         &GRAPHINIT;
+61          /* Location of the Country Code data on github - note the RAW bit */
+62         %let githubRoot=https://raw.githubusercontent.com/datasets/airport-codes/master/data
+62       ! ;
+63         
+64         
+65          /* temp location for CSV files, works on UNIX or Windows */
+66         %let csvOut = %sysfunc(getoption(WORK));
+67         
+68         filename air "&csvOut./airport-codes.csv";
+69         
+70         proc http method="get"
+3                                       The SAS System  Thursday, February 21, 2019 11:04:53 AM
+
+71          url="&githubroot./airport-codes.csv"
+72          out=air
+73          ;
+74         run;
+
+NOTE: PROCEDURE HTTP used (Total process time):
+      real time           1.14 seconds
+      cpu time            0.50 seconds
+      
+
+75         
+76         proc import file=air out=airports dbms=csv replace;
+77         guessingrows=max;
+78         run;
+
+NOTE: Unable to open parameter catalog: SASUSER.PARMS.PARMS.SLIST in update mode. Temporary 
+parameter values will be saved to WORK.PARMS.PARMS.SLIST.
+79          /**********************************************************************
+80          *   PRODUCT:   SAS
+81          *   VERSION:   9.4
+82          *   CREATOR:   External File Interface
+83          *   DATE:      21FEB19
+84          *   DESC:      Generated SAS Datastep Code
+85          *   TEMPLATE SOURCE:  (None Specified.)
+86          ***********************************************************************/
+87             data WORK.AIRPORTS    ;
+88             %let _EFIERR_ = 0; /* set the ERROR detection macro variable */
+89             infile AIR delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2 ;
+90                informat ident $7. ;
+91                informat type $14. ;
+92                informat name $130. ;
+93                informat elevation_ft $5. ;
+94                informat continent $2. ;
+95                informat iso_country $2. ;
+96                informat iso_region $21. ;
+97                informat municipality $62. ;
+98                informat gps_code $4. ;
+99                informat iata_code $3. ;
+100               informat local_code $7. ;
+101               informat coordinates $45. ;
+102               format ident $7. ;
+103               format type $14. ;
+104               format name $130. ;
+105               format elevation_ft $5. ;
+106               format continent $2. ;
+107               format iso_country $2. ;
+108               format iso_region $21. ;
+109               format municipality $62. ;
+110               format gps_code $4. ;
+111               format iata_code $3. ;
+112               format local_code $7. ;
+113               format coordinates $45. ;
+114            input
+115                        ident  $
+116                        type  $
+117                        name  $
+4                                       The SAS System  Thursday, February 21, 2019 11:04:53 AM
+
+118                        elevation_ft  $
+119                        continent  $
+120                        iso_country  $
+121                        iso_region  $
+122                        municipality  $
+123                        gps_code  $
+124                        iata_code  $
+125                        local_code  $
+126                        coordinates  $
+127            ;
+128            if _ERROR_ then call symputx('_EFIERR_',1);  /* set ERROR detection macro
+128      ! variable */
+129            run;
+
+NOTE: The infile AIR is:
+      
+      Filename=C:\Users\suksel\AppData\Local\Temp\SAS Temporary 
+      Files\_TD14756_suksel_\Prc2\airport-codes.csv,
+      RECFM=V,LRECL=32767,File Size (bytes)=5979191,
+      Last Modified=21Feb2019:11:04:55,
+      Create Time=21Feb2019:11:04:54
+
+NOTE: 54736 records were read from the infile AIR.
+      The minimum record length was 49.
+      The maximum record length was 190.
+NOTE: The data set WORK.AIRPORTS has 54736 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.60 seconds
+      cpu time            0.07 seconds
+      
+
+54736 rows created in WORK.AIRPORTS from AIR.
+  
+  
+  
+ERROR: No such object.
+Parameters passed to method _EXISTSBYNAME:
+  1 mbrc = .
+  2 repname = 'REPTGAL'
+  3 found = 0
+  4 (Numeric Literal) = 0
+Program returning prematurely at line 36
+AF Program: SASHELP.MB.REPEXIST.SCL
+*** Line 136: [ERROR:  #114]  Calling function SEND.  Unable to perform requested function
+Arguments passed to SEND:
+  1 _self_ = 6453
+  2 (Character Literal) = '_REPOSITORY_EXIST_'
+Parameters passed to SEND ENTRY:
+  1 (Character Literal) = 'REPTGAL'
+  2 exist = 'N'
+Program returning prematurely at line 136
+AF Program: SASHELP.MB.MBENGINE.SCL
+*** Line 447: [ERROR:  #114]  Calling function SEND.  Unable to perform requested function
+Arguments passed to SEND:
+  1 oid = 6453
+  2 (Character Literal) = '_TERM_'
+5                                       The SAS System  Thursday, February 21, 2019 11:04:53 AM
+
+Parameters passed to SEND ENTRY:
+Program returning prematurely at line 447
+AF Program: SASHELP.FSP.RESMGR.SCL
+*** Line 201: [ERROR:  #114]  Calling function SEND.  Unable to perform requested function
+Arguments passed to SEND:
+  1 _self_ = 5027
+  2 (Character Literal) = '_END_METABASE_'
+Parameters passed to SEND ENTRY:
+Program returning prematurely at line 201
+AF Program: SASHELP.FSP.RESMGR.SCL
+*** Line 242: [ERROR:  #114]  Calling function SEND.  Unable to perform requested function
+Arguments passed to SEND:
+  1 _self_ = 5027
+  2 methodname = '_TERM_'
+Parameters passed to SEND ENTRY:
+Program returning prematurely at line 242
+AF Program: SASHELP.FSP.AFCLASS.SCL
+ERROR: No such object.
+Parameters passed to method _EXISTSBYNAME:
+  1 mbrc = .
+  2 repname = 'REPTGAL'
+  3 found = 0
+  4 (Numeric Literal) = 0
+Program returning prematurely at line 36
+AF Program: SASHELP.MB.REPEXIST.SCL
+*** Line 136: [ERROR:  #114]  Calling function SEND.  Unable to perform requested function
+Arguments passed to SEND:
+  1 _self_ = 6453
+  2 (Character Literal) = '_REPOSITORY_EXIST_'
+Parameters passed to SEND ENTRY:
+  1 (Character Literal) = 'REPTGAL'
+  2 exist = 'N'
+Program returning prematurely at line 136
+AF Program: SASHELP.MB.MBENGINE.SCL
+NOTE: WORK.AIRPORTS data set was successfully created.
+NOTE: The data set WORK.AIRPORTS has 54736 observations and 12 variables.
+NOTE: PROCEDURE IMPORT used (Total process time):
+      real time           23.91 seconds
+      cpu time            22.82 seconds
+      
+
+130        
+131        filename air clear;
+NOTE: Fileref AIR has been deassigned.
+132        
+133        libname airports 'c:\demo data\airports';
+NOTE: Libref AIRPORTS was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: c:\demo data\airports
+134        
+135        data airports.air;
+136         set airports;
+137         label ident='Identity'
+138         type='Airport Type'
+139         name='Airport Name'
+140         latitude_deg='Latitude'
+6                                       The SAS System  Thursday, February 21, 2019 11:04:53 AM
+
+141         longitude_deg='Longitude'
+142         elevation_ft='Elevation in Feet'
+143         continent='Continent'
+144         iso_country='ISO Country'
+145         iso_region='ISO Region'
+146         municipality='Municipality'
+147         gps_code='GPS Code'
+148         iata_code='IATA Code'
+149         local_code='Local Code'
+150         ;
+151        run;
+
+NOTE: Variable latitude_deg is uninitialized.
+NOTE: Variable longitude_deg is uninitialized.
+NOTE: There were 54736 observations read from the data set WORK.AIRPORTS.
+NOTE: The data set AIRPORTS.AIR has 54736 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.54 seconds
+      cpu time            0.04 seconds
+      
+
+152        
+153        data airports.uk;
+154         set airports.air;
+155         if iso_country='GB'
+156         ;
+157        run;
+
+NOTE: There were 54736 observations read from the data set AIRPORTS.AIR.
+NOTE: The data set AIRPORTS.UK has 900 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+      
+
+158        
+159        OPTIONS NOSYNTAXCHECK;
+160        &GRAPHTERM; ;*';*";*/;RUN;QUIT;
+161        ODS HTML5 (ID=WEB) CLOSE;
+162        

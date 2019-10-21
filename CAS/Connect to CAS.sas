@@ -5,7 +5,7 @@
 /*  is 5570.                                                                 */
 /*****************************************************************************/
 
-options cashost="localhost" casport=5570;
+options cashost="eecucs05.unx.sas.com" casport=5570;
 cas;
 /*****************************************************************************/
 /*  Create a default CAS session and create SAS librefs for existing caslibs */
