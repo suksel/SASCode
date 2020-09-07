@@ -1,19 +1,21 @@
-/*****************************************************************************/
-/*  Set the options necessary for creating a connection to a CAS server.     */
-/*  Once the options are set, the cas command connects the default session   */ 
-/*  to the specified CAS server and CAS port, for example the default value  */
-/*  is 5570.                                                                 */
-/*****************************************************************************/
+   /* Just so can see what is happening */
+options set=CASCLIENTDEBUG=1;
 
-options cashost="localhost" casport=5570;
-cas;
-/*****************************************************************************/
-/*  Create a default CAS session and create SAS librefs for existing caslibs */
-/*  so that they are visible in the SAS Studio Libraries tree.               */
-/*****************************************************************************/
+ /* REMEMBER the LINUX BOX not the Windows frontend :) */
+options cashost="172.28.235.173" casport=5570;
 
+
+cas mysession;
+
+/*****************************************************************************/
+/* Create SAS librefs for existing caslibs                                   */
+/* So that they are visible in the Libraries tree.                           */
+/*****************************************************************************/
 
 caslib _all_ assign;
 
+/*****************************************************************************/
+/*  Terminate the specified CAS session (mySession). No reconnect is possible*/
+/*****************************************************************************/
 
-
+*cas mysession terminate;

@@ -16,7 +16,11 @@ file in;
 input; 
 put _infile_;
 datalines4;
+<<<<<<< Local
 csv.x=yes&Datefrom=01/Jan/1980&Dateto=30/Nov/2019&SeriesCodes=XUMAGPS,XUMAUSS,XUMAERS&CSVF=TN&UsingCodes=Y&VPD=Y&VFD=N
+=======
+csv.x=yes&Datefrom=01/Jan/1980&Dateto=30/Sep/2019&SeriesCodes=XUMAGPS,XUMAUSS,XUMAERS&CSVF=TN&UsingCodes=Y&VPD=Y&VFD=N
+>>>>>>> Remote
 ;;;;
 run;
 
@@ -43,3 +47,5 @@ data nine.boe;
  
  format date date11.;
 run; 
+
+;*';*";*/;quit;
