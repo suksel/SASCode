@@ -7,7 +7,7 @@
  /* Temporary File used to input into URL */
 filename in temp; 
  /* Output File used to create CSV - could get creative and use input values? */
-filename out 'c:\temp\boe.csv';
+filename out 'boe.csv';
 
  /* Sets up string to be passed to URL */
  /* Dates - seem a little strange - perhaps didnt like the Jan1 1960? */
@@ -16,7 +16,7 @@ file in;
 input; 
 put _infile_;
 datalines4;
-csv.x=yes&Datefrom=01/Jan/1980&Dateto=30/Apr/2017&SeriesCodes=XUMAGPS,XUMAUSS,XUMAERS&CSVF=TN&UsingCodes=Y&VPD=Y&VFD=N
+csv.x=yes&Datefrom=01/Jan/1980&Dateto=30/Nov/2019&SeriesCodes=XUMAGPS,XUMAUSS,XUMAERS&CSVF=TN&UsingCodes=Y&VPD=Y&VFD=N
 ;;;;
 run;
 
@@ -31,8 +31,8 @@ proc http url="http://www.bankofengland.co.uk/boeapps/iadb/fromshowcolumns.asp?"
 ;
 run;
 
-libname boe 'C:\Users\suksel\OneDrive - SAS\Working On\B\Bank of England\Data';
-data boe.boe;
+/* Nine is in AUTOEXEC file */
+data nine.boe;
  infile out firstobs=2 dlm=',' missover;
  input date date11. xumagps xumauss xumaers;
  label xumagps='Monthly average - Gold price against Sterling'

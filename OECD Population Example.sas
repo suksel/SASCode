@@ -1,3 +1,7 @@
+cas; 
+caslib _all_ assign;
+
+
 /* Not sure why this was needed but was in the Original Sample
 Removed the link to the Certificate as not needed in our example 
  Take values from here:
@@ -7,7 +11,7 @@ options validvarname=any;
 title 'Retrieve Population Data for Australia, Japan, Germany, UK';
 
 /* Location for final OECD table */
-libname mylib "c:\data\OECD";
+*libname mylib "c:\data\OECD";
 
 /* specify selection keys; key0 is the time series */
 data keylist0;
@@ -34,10 +38,10 @@ run;
 
 title1 "Population Data from OECD";
 title2 "Request Population Data for These Countries: FRA, DEU, IRL, GBR";
-libname oecd saseoecd "c:\temp" setid=CSPCUBE inset0=keylist0 inset1=keylist1 
+libname oecd saseoecd "." setid=CSPCUBE inset0=keylist0 inset1=keylist1 
 	 out=POP start='2013' end='2017';
 
-data mylib.POP;
+data public.POP;
 	set oecd.POP;
 	/* POP is specified in the OUT= option */
 	date_sas=mdy(1,1,date);
@@ -45,7 +49,7 @@ data mylib.POP;
 	label date='Date' date_sas='SAS Date';
 run;
 
-title3 "The mylib.POP Data Set";
+title3 "The public.POP Data Set";
 
-proc print data=mylib.POP label;
+proc print data=public.POP label;
 run;
