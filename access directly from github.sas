@@ -1,3 +1,5 @@
+ /* */
+
 filename _inbox "%sysfunc(getoption(work))/alcohol_demand_2017.sas7bdat";
  
 proc http method="get" 
